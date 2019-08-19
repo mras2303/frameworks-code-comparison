@@ -1,4 +1,3 @@
-[angular.js]: ./assets/logos/angularjs-small.svg
 [angular]: ./assets/logos/angular-small.svg
 [react]: ./assets/logos/react-small.svg
 [vue]: ./assets/logos/vue-small.svg
@@ -50,56 +49,6 @@ All examples follow the current best practices and conventions that are used ins
   * [Styling](#styling)
 
 # Simple component
-
-## ![angular.js] AngularJS
-
-Since AngularJS 1.5 we have a new syntax (backported from Angular 2) to built [component-based applications](https://docs.angularjs.org/guide/component#component-based-application-architecture) using `component` type.
-
-```js
-export class ChangePasswordController {
-  constructor($log, Auth, Notification) {
-    'ngInject';
-
-    this.$log = $log;
-    this.Auth = Auth;
-    this.Notification = Notification;
-  }
-
-  $onInit() {
-    this.password = '';
-  }
-
-  changePassword() {
-    this.Auth.changePassword(this.password).then(() => {
-      this.Notification.info('Password has been changed successfully.');
-    }).catch(error => {
-      this.$log.error(error);
-      this.Notification.error('There was an error. Please try again.');
-    });
-  }
-}
-```
-
-Every component has to be declared inside a module. After that, it will be available to every other component.
-
-```js
-import angular from 'angular';
-import template from './changePassword.html';
-import ChangePasswordController from './changePassword.controller.scss';
-import './changePassword.scss';
-
-const component = {
-  bindings: {},
-  template,
-  controller: ChangePasswordController,
-};
-
-export const module = angular
-  .module('app.changePassword', [])
-  .component('changePassword', component);
-```
-
-:link: https://docs.angularjs.org/guide/component
 
 ## ![angular] Angular
 
@@ -212,31 +161,6 @@ Vue.component('change-password', {
 
 # Dependency injection
 
-## ![angular.js] AngularJS
-
-In AngularJS the constructor is being used to inject dependencies, which is done implicitly by the [$inject](https://docs.angularjs.org/api/auto/service/$injector) service.
-
-The `'ngInject'` annotation can be used, which allows automatic method annotation by the ng-annotate plugin (e.g. [ng-annotate-loader](https://www.npmjs.com/package/ng-annotate-loader) for Webpack). This is essential to counter [minification problems](https://docs.angularjs.org/guide/di#dependency-annotation).
-
-```js
-export class ChangePasswordController {
-  constructor($log, Auth, Notification) {
-    'ngInject';
-
-    this.$log = $log;
-    this.Auth = Auth;
-    this.Notification = Notification;
-  }
-
-  handleEvent() {
-    this.Notification.info('Password changed successfully');
-    this.$log.info('Password changed successfully');
-  }
-}
-```
-
-:link: https://docs.angularjs.org/guide/di
-
 ## ![angular] Angular
 
 You specify the definition of the dependencies in the constructor (leveraging TypeScript's constructor syntax for declaring parameters and properties simultaneously).
@@ -340,22 +264,6 @@ Vue.component('change-password', {
 
 # Templates
 
-## ![angular.js] AngularJS
-
-Templates in AngularJS are compiled by the [$compile](https://docs.angularjs.org/api/ng/service/$compile) service.
-Values of component properties must be one of the following:
-- string binding (defined as `@`)
-- expression binding (defined as `<`)
-- reference binding (defined as `&`)
-
-```html
-<primary-button size="big"
-                disabled="true"
-                click="$ctrl.saveContent()">
-  Save
-</primary-button>
-```
-
 ## ![angular] Angular
 
 There are three kinds of attributes that can be passed:
@@ -407,29 +315,6 @@ Events can be listened to using [`v-on`](https://vuejs.org/v2/guide/events.html#
 
 # Interpolation
 
-## ![angular.js] AngularJS
-
-In AngularJS interpolation is the process of data-binding values of the `scope` to the HTML. You can also interpolate more complicated values e.g. expressions or function invocations.
-
-
-```html
-<img ng-src="{{ $ctrl.image.url }}" alt="{{ $ctrl.image.alt }}" />
-```
-
-We use [`ng-src`](https://docs.angularjs.org/api/ng/directive/ngSrc) instead of the regular `src` attribute so that AngularJS can set it up before the browser will try to load the image.
-
-Another way to "bind" data is to use [`ng-bind`](https://docs.angularjs.org/api/ng/directive/ngBind). This allows us to counter the issue with a raw state being displayed before AngularJS compiles the template.
-
-```html
-<label>
-    Enter name:
-    <input type="text" ng-model="$ctrl.name">
-</label>
-<span ng-bind="$ctrl.name"></span>
-```
-
-:link: https://docs.angularjs.org/guide/interpolation
-
 ## ![angular] Angular
 
 Angular is similar to AngularJS, so we use double curly braces (`{{ }}`) for interpolation. Since Angular offers property binding you often have a choice to use it [instead of interpolation](https://angular.io/guide/template-syntax#property-binding-or-interpolation).
@@ -467,50 +352,6 @@ You can also perform one-time interpolations that do not update on data change b
 :link: https://vuejs.org/v2/guide/syntax.html#Interpolations
 
 # Handling DOM Events
-
-## ![angular.js] AngularJS
-
-Handlers of native events are bound using provided [built-in directives](https://docs.angularjs.org/api/ng/directive) e.g.
-[`ng-click`](https://docs.angularjs.org/api/ng/directive/ngClick), [`ng-focus`](https://docs.angularjs.org/api/ng/directive/ngFocus), [`ng-keypress`](https://docs.angularjs.org/api/ng/directive/ngKeypress).
-
-```js
-class MenuTopbarController {
-  $onInit() {
-    this.selected = null;
-  }
-
-  handleClick(item) {
-    if (this.selected !== item) {
-      this.selected = item;
-      if (typeof item.callback === 'function') {
-        item.callback();
-      }
-    }
-  }
-}
-
-const menuTopbar = {
-  bindings: {
-    items: '<',
-  },
-  template: require('./menuTopbar.html'),
-  controller: MenuTopbarController,
-};
-
-angular.module('app')
-  .component('menuTopbar', menuTopbar);
-```
-
-```html
-<ul>
-  <li ng-repeat="item in $ctrl.items"
-      ng-click="$ctrl.handleClick(item)">
-    {{ item.label }}
-  </li>
-</ul>
-```
-
-:link: https://docs.angularjs.org/tutorial/step_12
 
 ## ![angular] Angular
 
@@ -667,73 +508,6 @@ Vue.component('menu-topbar', {
 :link: https://vuejs.org/v2/guide/events.html
 
 # Inputs and Outputs
-
-## ![angular.js] AngularJS
-
-Inputs are defined by either `@` (string binding) or `<` (one-way binding) while outputs are defined by the `&` symbol. Passing arguments requires you to use an object in a child component which is then mapped to function parameters defined in the template.
-
-```js
-class UserPreviewComponent {
-  $onInit() {
-    this.editedUser = {
-      name: this.user.name,
-      email: this.user.email,
-    };
-  }
-
-  submitEdit() {
-    this.onEdit({ user: this.editedUser });
-  }
-}
-
-const component = {
-  bindings: {
-    user: '<',
-    onEdit: '&',
-  },
-  template: require('./userPreview.html'),
-  controller: UserPreviewComponent,
-};
-
-export default angular.module.component('userPreview', component);
-```
-
-```html
-<form ng-submit="$ctrl.submitEdit()">
-  <input type="text" ng-model="$ctrl.editedUser.name">
-  <input type="email" ng-model="$ctrl.editedUser.email">
-  <input type="submit" value="Submit" />
-</form>
-```
-
-In a parent component:
-
-```js
-class SettingsComponent {
-  user = {
-    name: 'John Smith',
-    email: 'john.smith@example.com',
-  };
-
-  editUser(user) {
-    this.user = Object.assign({}, this.user, user);
-    console.log('Name of the edited user is', user.name);
-  }
-}
-
-const component = {
-  template: require('./settings.html'),
-  controller: SettingsComponent,
-};
-
-export default angular.module.component('settings', component);
-```
-
-```html
-<user-preview user="user"
-              on-edit="editUser(user)">
-</user-preview>
-```
 
 ## ![angular] Angular
 
@@ -906,34 +680,6 @@ Usage in the parent component:
 
 # Default inputs
 
-## ![angular.js] AngularJS
-
-There's no built-in mechanism for default inputs, so we assign them programmatically in the `$onChanges` hook.
-
-```js
-class CoursesListController {
-  $onChanges(bindings) {
-    if (typeof bindings.displayPurchased.currentValue === 'undefined') {
-      this.displayPurchased = true;
-    }
-    if (typeof bindings.displayAvailable.currentValue === 'undefined') {
-      this.displayAvailable = true;
-    }
-  }
-}
-
-const component = {
-  bindings: {
-    displayPurchased: '<',
-    displayAvailable: '<',
-  },
-  templateUrl: './coursesList.component.html',
-  controller: CoursesListController,
-};
-
-export default component;
-```
-
 ## ![angular] Angular
 
 ```ts
@@ -995,30 +741,6 @@ Vue.component('courses-list', {
 ```
 
 # Lifecycle methods
-
-## ![angular.js] AngularJS
-
-#### `$onInit()` 
-
-Called when the component has been constructed and has its bindings have been initialized.
-
-#### `$postLink()` 
-
-Called after the component and its children have been linked (mounted).
-
-#### `$onChanges(changes)`
-
-Called whenever one-way bindings are updated.
-
-#### `$doCheck()`
-
-Called on each turn of the digest cycle.
-
-#### `$onDestroy()`
-
-Called when the component (a controller with its containing scope) is being destroyed.
-
-:link: https://docs.angularjs.org/api/ng/service/$compile
 
 ### ![angular] Angular
 
@@ -1311,36 +1033,6 @@ Called when an error from any descendent component is captured.
 
 # Conditional rendering
 
-## ![angular.js] AngularJS
-
-Angularjs 1.x has three ways to perform conditional rendering: `ng-if`, `ng-switch` and `ng-hide/ng-show`.
-
-```js
-export class RegistrationController {
-  registrationCompleted = false;
-  displaySpecialOffer = false;
-  displayStatus = 'Registered';
-}
-```
-```html
-<div ng-if="displaySpecialOffer">
-  <special-offer></special-offer>
-</div>
-
-<div ng-switch="displayStatus">
-  <div ng-switch-when="Registered">
-     <registration-completed></registration-completed>
-  </div>
-</div>
-
-<div ng-show="displaySpecialOffer">
-  <special-offer></special-offer>
-</div>
-<div ng-hide="displaySpecialOffer">
-  <special-offer></special-offer>
-</div>
-```
-
 ## ![angular] Angular
 
 Since Angular 4.0.0, alongside standard `ngIf`, it is possible to use `ngIf;else` or `ngIf;then;else` using `<ng-template>` with an alias `#aliasName`.
@@ -1430,42 +1122,6 @@ Vue.js has three directives to perform conditional rendering: `v-if`, `v-else-if
 :link: https://vuejs.org/v2/guide/conditional.html
 
 # Lists
-
-## ![angular.js] AngularJS
-
-[ngRepeat](https://docs.angularjs.org/api/ng/directive/ngRepeat)
-
-```js
-export class BookListComponentCtrl {
-  constructor() {
-    this.books = [
-      {
-        id: 1,
-        title: 'Eloquent JavaScript',
-        author: 'Marijn Haverbeke',
-      },
-      {
-        id: 2,
-        title: 'JavaScript: The Good Parts',
-        author: 'Douglas Crockford',
-      },
-      {
-        id: 3,
-        title: 'JavaScript: The Definitive Guide',
-        author: 'David Flanagan',
-      },
-    ];
-  }
-}
-```
-
-```html
-<ul>
-  <li ng-repeat="book in $ctrl.books track by book.id">
-    {{ book.title }} by {{ book.author }}
-  </li>
-</ul>
-```
 
 ## ![angular] Angular
 
@@ -1604,37 +1260,6 @@ export default {
 
 # Filters
 
-## ![angular.js] AngularJS
-
-AngularJS provides filters to transform data. There are several [built-in filters](https://docs.angularjs.org/api/ng/filter) available and you can make your own custom filters as well.
-
-Filters can be applied to view templates using the following syntax:
-
-```html
-<h1>{{ price | currency }}</h1>
-```
-
-Chaining of filters is also possible:
-
-```html
-<h1>{{ name | uppercase | appendTitle  }}</h1>
-```
-
-Custom Filters:
-
-```js
-angular.module('app', [])
-  .filter('reverse', function() {
-    return (input = '', uppercase = false) => {
-      const out = input.split('').reverse().join('');
-
-      return uppercase ? out.toUpperCase() : out;
-    };
-  });
-```
-
-:link: https://docs.angularjs.org/guide/filter
-
 ## ![angular] Angular
 
 In Angular filters are called [pipes](https://angular.io/guide/pipes). The built-in pipes available in Angular are: DatePipe, UpperCasePipe, LowerCasePipe, CurrencyPipe, and PercentPipe.
@@ -1753,37 +1378,6 @@ For global filters to work, they should be declared before the Vue instance.
 :link: https://vuejs.org/v2/guide/filters.html
 
 # Child nodes
-
-## ![angular.js] AngularJS
-
-Inside a [component](https://docs.angularjs.org/guide/component), we have access to the child node by injecting `$element` to the controller. This object contains a [jqLite](https://docs.angularjs.org/api/ng/function/angular.element) wrapped instance of the DOM element. Accessing `$element[0]` will return the bare DOM element.
-
-Transclusion is also supported - using `ng-transclude` (See [Transclusion and Containment](#transclusion-and-containment) section).
-
-```js
-class TextInputController {
-  constructor($element) {
-    'ngInject';
-
-    this.$element = $element;
-  }
-
-  // The $element can be used after the link stage
-  $postLink() {
-    const input = this.$element.find('input');
-    input.on('change', console.log);
-  }
-}
-
-const component = {
-  controller: TextInputController,
-  template: `
-    <div>
-      <input type="text" />
-    </div>
-  `,
-};
-```
 
 ## ![angular] Angular
 
@@ -1939,34 +1533,6 @@ const App = () => (
 
 ## Basic
 
-## ![angular.js] AngularJS
-
-```js
-angular.module('app.layout', [])
-  .component('layout', {
-    bindings: {
-      theme: '@',
-    },
-    controller: LayoutController,
-    transclude: true,
-    template: `
-    <div ng-class="'theme-' + $ctrl.theme">
-      <ng-transclude></ng-transclude>
-    </div>
-  `,
-  }).component('pageContent', {
-    template: '<div>Some content</div>',
-  }).component('pageFooter', {
-    template: '<footer>Some content</footer>',
-  });
-```
-```html
-<layout theme="dark">
-  <page-content></page-content>
-  <page-footer></page-footer>
-</layout>
-```
-
 ## ![angular] Angular
 
 ```ts
@@ -2027,38 +1593,6 @@ const PageFooter = () => (
 > TODO
 
 ## Multiple slots
-
-## ![angular.js] AngularJS
-
-```js
-angular.module('app.layout', [])
-  .component('landingSection', {
-    bindings: {},
-    controller: LandingSectionController,
-    transclude: {
-      contentSlot: '?content', // '?' indicates an optional slot
-      iconSlot: '?icon',
-    },
-    template: `
-    <div>
-      <span ng-transclude="contentSlot"></span>
-      <div>
-        <span ng-transclude="iconSlot">This is the default value</span>
-      </dev>
-    </div>
-  `,
-  }).component('pageContent', {
-    template: '<div>Some content</div>',
-  });
-```
-```html
-<div>
-  <h1>Page title</h1>
-  <landing-section>
-    <page-content></page-content>
-  </landing-section>
-</div>
-```
 
 ## ![angular] Angular
 
@@ -2140,17 +1674,6 @@ Result:
 
 # Class toggling
 
-## ![angular.js] AngularJS
-
-The [ng-class](https://docs.angularjs.org/api/ng/directive/ngClass) directive allows you to dynamically set CSS classes on an HTML element.
-
-```html
-<main-header
-  ng-class="{ 'mainNavbar--fluid': $ctrl.isFluid }">
-...
-</main-header>
-```
-
 ## ![angular] Angular
 
 In Angular, the [ngClass](https://angular.io/guide/ajs-quick-reference#ngclass) directive works similarly. It includes/excludes CSS classes based on an expression.
@@ -2203,36 +1726,6 @@ class App {
 
 # Data binding
 
-## ![angular.js] AngularJS
-
-The [ng-model](https://docs.angularjs.org/api/ng/directive/ngModel) directive binds a form control to a property in the controller. This provides two-way binding.
-
-```js
-import angular from 'angular';
-import template from './registration.html';
-
-class RegistrationController {
-  $onInit() {
-    this.name = '';
-  }
-}
-
-const component = {
-  bindings: {},
-  template,
-  controller: RegistrationController,
-};
-
-export const module = angular
-  .module('app.registration', [])
-  .component('registration', component);
-```
-
-```html
-<input ng-model="$ctrl.name" />
-<p>Name: {{ $ctrl.name }}</p>
-```
-
 ## ![angular] Angular
 
 We use [`[(ngModel)]`](https://angular.io/api/forms/NgModel) to have a two-way data binding inside our forms. The value in the UI will always be synced with the domain model in the component.
@@ -2267,43 +1760,6 @@ You can use the `v-model` directive to create **two-way data bindings** on form 
 :link: https://vuejs.org/v2/guide/forms.html
 
 # Forms
-
-## ![angular.js] AngularJS
-
-```js
-class SignInController {
-  constructor(Auth) {
-    'ngInject';
-
-    this.Auth = Auth;
-  }
-
-  $onInit() {
-    this.email = '';
-    this.password = '';
-  }
-
-  submit() {
-    Auth.signIn(this.email, this.password);
-  }
-}
-
-```
-
-```html
-<form name="$ctrl.form">
-  <label>
-    Email:
-    <input type="text" ng-model="$ctrl.email" />
-  </label>
-
-  <label>
-    E-mail:
-    <input type="email" ng-model="$ctrl.password" />
-  </label>
-  <input type="submit" ng-click="$ctrl.submit()" value="Save" />
-</form>
-```
 
 ## ![angular] Angular
 
@@ -2479,34 +1935,6 @@ export default {
 
 # Styling
 
-## ![angular.js] AngularJS
-
-Generally you will use a preprocessor (e.g. [Sass](http://sass-lang.com/)) and assign appropriate classes to the elements.
-
-The [`ng-style`](https://docs.angularjs.org/api/ng/directive/ngStyle) directive allows you to set custom CSS styles dynamically.
-
-```js
-class HeaderController {
-  constructor(ThemeProvider) {
-    'ngInject';
-
-    this.ThemeProvider = ThemeProvider;
-    this.headerStyles = {};
-  }
-
-  $onInit() {
-    this.headerStyles.color = ThemeProvider.getTextPrimaryColor();
-  }
-}
-```
-
-```html
-<h1 ng-style="$ctrl.headerStyles"
-    class="Header">
-    Welcome
-</h1>
-```
-
 ## ![angular] Angular
 
 When defining Angular components you may also include the CSS styles that will go with the template. By default the styles will be compiled as shadow DOM, which basically means you don't need any namespacing strategy for CSS classes.
@@ -2618,14 +2046,6 @@ module.exports = {
 # Inject HTML template
 
 Also known as innerHTML.
-
-## ![angular.js] AngularJS
-
-By default, the HTML content will be sanitized using the [$sanitize](https://docs.angularjs.org/api/ngSanitize/service/$sanitize) service. To utilize this functionality, you need to include `ngSanitize` in your module's dependencies. [Read more](https://docs.angularjs.org/api/ng/directive/ngBindHtml)
-
-```html
-<p ng-bind-html="$ctrl.article.content"></p>
-```
 
 ## ![angular] Angular
 
